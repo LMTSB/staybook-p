@@ -799,8 +799,8 @@ if (host) {
 
     new ResizeObserver(resize).observe(host);
     window.addEventListener('resize', resize);
-    window.addEventListener('spacialstay:3d-resize', resize);
-    window.addEventListener('spacialstay:room-open', (e) => {
+    window.addEventListener('spatialstay:3d-resize', resize);
+    window.addEventListener('spatialstay:room-open', (e) => {
       const roomObj = e && e.detail && e.detail.room;
       const roomId = typeof roomObj === 'string' ? roomObj : (roomObj && roomObj.id) || 'urban';
       buildRoom(roomId);
@@ -851,7 +851,7 @@ if (host) {
     buildRoom('urban');
     setLight('day');
     resize();
-    window.__spacialstay3DReady = true;
+    window.__spatialstay3DReady = true;
 
     function render() {
       requestAnimationFrame(render);
@@ -868,7 +868,7 @@ if (host) {
     }
     render();
   } catch (err) {
-    console.error('SpacialStay 3D viewer initialization failed:', err);
+    console.error('SpatialStay 3D viewer initialization failed:', err);
     if (loadingEl) {
       loadingEl.textContent = '3D viewer unavailable in this browser session. Please check WebGL or internet connection.';
     }
