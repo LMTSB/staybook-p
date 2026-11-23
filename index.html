@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17211c">
+  <title>StayBook — 3D Hotel Booking Demo</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="stylesheet" href="styles.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <a class="brand" id="brand-home" href="#" aria-label="StayBook home"><span class="brand-icon">S</span>staybook <small>3D DEMO</small></a>
+    <nav class="progress" aria-label="Booking progress">
+      <span class="progress-step active" data-step="login"><i>1</i>Login</span>
+      <span class="progress-step" data-step="browse"><i>2</i>Explore</span>
+      <span class="progress-step" data-step="payment"><i>3</i>Payment</span>
+      <span class="progress-step" data-step="confirmation"><i>4</i>Done</span>
+    </nav>
+    <span class="header-note">See the space before you book.</span>
+  </header>
+
+  <main class="container">
+    <section id="page-login" class="page login-page">
+      <div class="login-copy"><span class="eyebrow">A MORE CONFIDENT WAY TO BOOK</span><h1>Don't just see<br>the room. <em>Explore it.</em></h1><p>Browse stays, inspect the layout in 3D, and understand the view before reserving.</p></div>
+      <div class="card login-card">
+        <span class="eyebrow">GUEST ACCESS</span><h2>Welcome to StayBook</h2><p class="muted">Passwordless-style demo sign-in. No account creation required.</p>
+        <label for="login-email">Email address</label><input id="login-email" type="email" value="guest@example.com" placeholder="you@example.com">
+        <button id="send-code" class="btn primary full" type="button">Continue with email <span>→</span></button>
+        <div id="otp-area" class="hidden otp-area"><label for="otp">Demo verification code</label><input id="otp" maxlength="6" inputmode="numeric" value="123456"><p class="hint">Enter <b>123456</b>. No email is sent.</p><button id="verify" class="btn primary full" type="button">Verify and enter</button></div>
+        <div class="rule"></div><p class="fine">Demo authentication only. No credentials are stored or transmitted.</p>
+      </div>
+    </section>
+
+    <section id="page-browse" class="page hidden">
+      <div class="heading-row"><div><span class="eyebrow">DISCOVER YOUR STAY</span><h1>Find your perfect room.</h1><p class="muted">Fictional Bangkok properties for this interactive prototype.</p></div><span class="location-chip">⌖ Bangkok, Thailand</span></div>
+      <div class="card search-panel">
+        <div class="field"><label for="search-in">Check-in</label><input id="search-in" type="date"></div>
+        <div class="field"><label for="search-out">Check-out</label><input id="search-out" type="date"></div>
+        <div class="field"><label for="search-guests">Guests</label><select id="search-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+        <button id="search" class="btn primary" type="button">Search stays</button>
+      </div>
+      <div class="list-heading"><h2>Featured rooms</h2><span>3 sample properties</span></div>
+      <div id="rooms" class="room-grid"></div>
+    </section>
+
+    <section id="page-details" class="page hidden">
+      <button id="back-browse" class="back" type="button">← Back to stays</button>
+      <div class="heading-row detail-title"><div><span class="eyebrow">ROOM DETAILS</span><h1 id="room-name"></h1><p id="room-location" class="muted"></p></div><span class="rating">★ <span id="room-rating"></span> guest rating (demo)</span></div>
+      <div class="photo-strip"><img id="room-photo" alt="Room reference photo"><img id="room-photo-2" alt="Room detail reference photo"></div>
+      <div class="detail-columns">
+        <div class="detail-main">
+          <article class="card info-card">
+            <div class="card-heading"><h2>Room overview</h2><span class="chip">Property information</span></div>
+            <p id="room-description" class="body-copy"></p>
+            <div class="specs"><div><b id="room-size"></b><small>Room size</small></div><div><b id="room-bed"></b><small>Bed type</small></div><div><b id="room-capacity"></b><small>Max guests</small></div><div><b>1 bathroom</b><small>Facilities</small></div></div>
+          </article>
+
+          <article class="card tour-card">
+            <div class="card-heading"><div><h2>Explore this room in interactive 3D</h2><p class="muted small">Drag to orbit · scroll or pinch to zoom · select a pin to inspect features.</p></div><span id="room3d-floor-chip" class="chip green">3D room concept</span></div>
+            <div class="tour-tabs" role="tablist" aria-label="3D viewing mode">
+              <button class="tour-tab active" data-viewmode="room" type="button">Room 3D</button>
+              <button class="tour-tab" data-viewmode="dollhouse" type="button">3D floor plan</button>
+              <button class="tour-tab" data-viewmode="outside" id="tab-outside-view" type="button">Window view</button>
+            </div>
+            <div class="panorama-wrap room3d-wrap">
+              <div id="room3d" aria-label="Interactive 3D model of the hotel room"></div>
+              <div class="room3d-topline"><span id="room3d-status">Interactive room model · drag to rotate</span><button id="room3d-reset" class="icon-btn" type="button">Reset camera</button></div>
+              <div class="room3d-hotspots" aria-label="Choose a feature">
+                <button class="room-hotspot" data-spot="bed" type="button"><i>1</i><span id="spot-label-bed">King bed</span></button>
+                <button class="room-hotspot" data-spot="window" type="button"><i>2</i><span id="spot-label-window">Window view</span></button>
+                <button class="room-hotspot" data-spot="tv" type="button"><i>3</i><span>Smart TV</span></button>
+                <button class="room-hotspot" data-spot="desk" type="button"><i>4</i><span>Workspace</span></button>
+              </div>
+              <div id="room3d-dimensions" class="room3d-dimensions hidden" aria-hidden="true">
+                <span class="room3d-dim-tag" data-dim="room">6.3 × 6.0 m</span>
+                <span class="room3d-dim-tag" data-dim="bed">King 180 × 200 cm</span>
+                <span class="room3d-dim-tag" data-dim="window">Window 5.4 m</span>
+                <span class="room3d-dim-tag" data-dim="ceiling">Ceiling 3.1 m</span>
+              </div>
+              <div id="room3d-info" class="room3d-info-card hidden" role="region" aria-live="polite">
+                <div class="room3d-info-head">
+                  <strong id="room3d-info-title">Feature details</strong>
+                  <button id="room3d-info-close" type="button" aria-label="Close feature details">✕</button>
+                </div>
+                <p id="room3d-info-body"></p>
+              </div>
+              <div id="viewer-loading" class="viewer-loading">Building interactive 3D room…</div>
+            </div>
+            <div class="viewpoint-row"><b>Camera presets</b><div><button class="icon-btn active" data-spot="overview" type="button">Overview</button><button class="icon-btn" data-spot="bed" type="button">Bed</button><button class="icon-btn" data-spot="window" type="button">Window</button><button class="icon-btn" data-spot="desk" type="button">Desk</button><button class="icon-btn" data-spot="tv" type="button">TV</button></div></div>
+            <div class="tour-actions">
+              <div><button id="light-day" class="icon-btn active" type="button">☀ Day</button><button id="light-sunset" class="icon-btn" type="button">🌇 Sunset</button><button id="light-night" class="icon-btn" type="button">☾ Night</button><button id="toggle-dimensions" class="icon-btn" type="button">📏 Dimensions</button></div>
+              <button id="room3d-fullscreen" class="icon-btn" type="button">⛶ Fullscreen</button>
+            </div>
+            <p class="disclaimer"><b>Prototype disclosure:</b> This is a procedurally built illustrative 3D room, not a laser scan or dimensionally verified model of a real hotel room. Furniture, room proportions, and the exterior backdrop are demonstration geometry. Replace with a property-measured 3D model and verified window view before presenting it as an actual room.</p>
+          </article>
+
+          <article class="card amenities-card"><h2>Amenities</h2><div id="amenities" class="amenities"></div></article>
+        </div>
+        <aside class="card reserve-card">
+          <div class="price"><b id="room-price"></b><span>/ night</span></div><p class="hint">Price before taxes and fees</p>
+          <div class="field"><label for="detail-in">Check-in</label><input id="detail-in" type="date"></div>
+          <div class="field"><label for="detail-out">Check-out</label><input id="detail-out" type="date"></div>
+          <div class="field"><label for="detail-guests">Guests</label><select id="detail-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
+          <div class="summary-line"><span>Number of nights</span><b id="estimate-nights">3 nights</b></div>
+          <div class="summary-line"><span>Estimated total*</span><b id="estimate-total"></b></div>
+          <button id="reserve" class="btn primary full" type="button">Continue to payment →</button><p class="hint center">No charge until confirmation (demo only).</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="page-payment" class="page hidden">
+      <button id="back-details" class="back" type="button">← Back to room</button>
+      <div class="heading-row"><div><span class="eyebrow">FINAL REVIEW</span><h1>Review your reservation.</h1><p class="muted">Check the guest, dates, and full price breakdown.</p></div></div>
+      <div class="payment-columns">
+        <div class="payment-main">
+          <article class="card payment-card"><h2>Your stay</h2><div class="stay"><img id="pay-photo" alt="Selected room"><div><b id="pay-room"></b><p id="pay-location" class="muted"></p><span class="chip">★ <span id="pay-rating"></span></span></div></div><div class="rule"></div><div class="facts"><div><small>CHECK-IN</small><b id="pay-in"></b></div><div><small>CHECK-OUT</small><b id="pay-out"></b></div><div><small>DURATION</small><b id="pay-nights"></b></div><div><small>GUESTS</small><b id="pay-guests"></b></div></div></article>
+          <article class="card payment-card"><h2>Guest information</h2><p class="muted small">Contact details for this reservation.</p><div class="form-grid"><div class="field"><label for="guest-name">Full name</label><input id="guest-name" placeholder="Your full name"></div><div class="field"><label for="guest-email">Email</label><input id="guest-email" type="email" placeholder="you@example.com"></div></div><div class="field"><label for="requests">Special requests (optional)</label><input id="requests" placeholder="Late check-in, extra pillows…"></div></article>
+        </div>
+        <aside class="card price-card"><h2>Price breakdown</h2><div class="summary-line"><span id="subtotal-label"></span><b id="subtotal"></b></div><div class="summary-line"><span>Service fee (5%)</span><b id="service"></b></div><div class="summary-line"><span>VAT (7%)</span><b id="tax"></b></div><div class="rule"></div><div class="grand-total"><span>Total amount</span><b id="total"></b></div><p class="disclaimer">Illustrative formula: 5% service fee on room subtotal, then 7% VAT on subtotal plus service fee. Actual tax treatment and hotel charges must be confirmed with a qualified local advisor and property operator.</p><button id="confirm" class="btn primary full" type="button">Confirm demo booking →</button><p class="hint center">No payment gateway connected. No money is collected.</p></aside>
+      </div>
+    </section>
+
+    <section id="page-confirmation" class="page hidden confirmation">
+      <div class="success-mark">✓</div><span class="eyebrow">BOOKING COMPLETE</span><h1>Your stay is confirmed!</h1><p class="muted">This is a local demo confirmation, not a real reservation.</p>
+      <article class="card confirm-card"><div class="card-heading"><h2>Booking confirmation</h2><span class="status">CONFIRMED</span></div><div class="rule"></div><small class="eyebrow">BOOKING REFERENCE</small><div id="reference" class="reference"></div><div class="rule"></div><div class="summary-line"><span>Property</span><b id="confirm-room"></b></div><div class="summary-line"><span>Guest</span><b id="confirm-guest"></b></div><div class="summary-line"><span>Stay</span><b id="confirm-dates"></b></div><div class="rule"></div><div class="grand-total"><span>Total (demo)</span><b id="confirm-total"></b></div></article>
+      <button id="restart" class="btn primary" type="button">Return to homepage</button>
+    </section>
+  </main>
+  <footer class="footer"><span>© 2026 StayBook · Product prototype</span><span>Fictional listings · Simulated checkout</span></footer>
+  <div id="toast" role="status" aria-live="polite"></div>
+</div>
+<script src="app.js"></script>
+<script type="module" src="room3d.js"></script>
+<script>
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      var loading = document.getElementById("viewer-loading");
+      if (loading && !loading.classList.contains("hidden") && !window.__staybook3DReady) {
+        if (window.location.protocol === "file:") {
+          loading.textContent = "Opened via file:// — run a local server (python -m http.server 8000) or host online so the 3D ES module can load.";
+        } else {
+          loading.textContent = "Unable to load Three.js from CDN. Check your internet connection or WebGL support.";
+        }
+      }
+    }, 3500);
+  });
+</script>
+</body>
+</html>
