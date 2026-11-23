@@ -1,4 +1,4 @@
-# StayBook — Product Manager Review
+# SpacialStay — Product Manager Review
 
 **Review date:** 23 November 2026  
 **Review scope:** Prototype quality, customer journey, commercial readiness, and delivery risks.
