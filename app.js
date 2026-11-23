@@ -5,7 +5,7 @@
   const fallbackSvg = "data:image/svg+xml;utf8," + encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">' +
     '<rect width="800" height="500" fill="#dfe7df"/>' +
-    '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#4f6454" font-family="sans-serif" font-size="22">StayBook Room Preview</text>' +
+    '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#4f6454" font-family="sans-serif" font-size="22">SpacialStay Room Preview</text>' +
     '</svg>'
   );
 
@@ -111,7 +111,7 @@
     });
 
     if (page === "booking") {
-      window.dispatchEvent(new Event("staybook:3d-resize"));
+      window.dispatchEvent(new Event("spacialstay:3d-resize"));
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -266,7 +266,7 @@
 
     renderRooms();
     updateEstimate();
-    window.dispatchEvent(new CustomEvent("staybook:room-open", { detail: { room: selected } }));
+    window.dispatchEvent(new CustomEvent("spacialstay:room-open", { detail: { room: selected } }));
     if (notify) toast(`Loaded 3D model for ${selected.name}`);
   }
 

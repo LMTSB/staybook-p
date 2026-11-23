@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17211c">
-  <title>StayBook — 3D Hotel Booking & QR Checkout Prototype</title>
+  <title>SpacialStay — 3D Hotel Booking & QR Checkout Prototype</title>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="styles.css">
@@ -20,7 +20,7 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <a class="brand" id="brand-home" href="#" aria-label="StayBook home"><span class="brand-icon">S</span>staybook <small>3D BOOKING</small></a>
+    <a class="brand" id="brand-home" href="#" aria-label="SpacialStay home"><span class="brand-icon">S</span>spacialstay <small>3D BOOKING</small></a>
     <nav class="progress" aria-label="Booking workflow">
       <button type="button" class="progress-step active" data-step="login"><i>1</i>Login</button>
       <button type="button" class="progress-step" data-step="booking"><i>2</i>Booking &amp; 3D</button>
@@ -45,7 +45,7 @@
       </div>
       <div class="card login-card">
         <span class="eyebrow">STEP 1 OF 3 · GUEST SIGN-IN</span>
-        <h2>Welcome to StayBook</h2>
+        <h2>Welcome to SpacialStay</h2>
         <p class="muted">Enter your email for passwordless demo access, or use instant guest sign-in.</p>
         <label for="login-email">Email address</label>
         <input id="login-email" type="email" value="guest@example.com" placeholder="you@example.com">
@@ -521,7 +521,7 @@
   </main>
 
   <footer class="footer">
-    <span>© 2026 StayBook 3D · Interactive Hospitality Prototype</span>
+    <span>© 2026 SpacialStay 3D · Interactive Hospitality Prototype</span>
     <span>Login → Booking &amp; 3D → Confirmation &amp; Payment</span>
   </footer>
   <div id="toast" role="status" aria-live="polite"></div>
@@ -532,7 +532,7 @@
   window.addEventListener("load", function () {
     setTimeout(function () {
       var loading = document.getElementById("viewer-loading");
-      if (loading && !loading.classList.contains("hidden") && !window.__staybook3DReady) {
+      if (loading && !loading.classList.contains("hidden") && !window.__spacialstay3DReady) {
         if (window.location.protocol === "file:") {
           loading.textContent = "Opened via file:// — run a local HTTP server (python -m http.server 8000) or host online so the 3D ES module can load.";
         } else {

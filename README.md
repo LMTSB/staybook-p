@@ -1,4 +1,4 @@
-# StayBook 3D — Reworked 3-Step Booking & QR Payment Prototype (v2)
+# SpacialStay 3D — Reworked 3-Step Booking & QR Payment Prototype (v2)
 
 ## Workflow Overview
 1. **Login Page (`#login`)**: Email + OTP (`123456`) or Instant Demo Sign-In.

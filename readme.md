@@ -1,4 +1,4 @@
-# StayBook 3D — Booking MVP Prototype
+# SpacialStay 3D — Booking MVP Prototype
 
 ## Run locally
 1. Extract `staybook-3d-prototype.zip`.
