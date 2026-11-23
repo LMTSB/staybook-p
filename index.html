@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#17211c">
-  <title>StayBook — 3D Hotel Booking Demo</title>
+  <title>StayBook — 3D Hotel Booking & QR Checkout Prototype</title>
   <link rel="preconnect" href="https://images.unsplash.com">
   <link rel="preconnect" href="https://cdn.jsdelivr.net">
   <link rel="stylesheet" href="styles.css">
@@ -20,124 +20,510 @@
 <body>
 <div class="app">
   <header class="topbar">
-    <a class="brand" id="brand-home" href="#" aria-label="StayBook home"><span class="brand-icon">S</span>staybook <small>3D DEMO</small></a>
-    <nav class="progress" aria-label="Booking progress">
-      <span class="progress-step active" data-step="login"><i>1</i>Login</span>
-      <span class="progress-step" data-step="browse"><i>2</i>Explore</span>
-      <span class="progress-step" data-step="payment"><i>3</i>Payment</span>
-      <span class="progress-step" data-step="confirmation"><i>4</i>Done</span>
+    <a class="brand" id="brand-home" href="#" aria-label="StayBook home"><span class="brand-icon">S</span>staybook <small>3D BOOKING</small></a>
+    <nav class="progress" aria-label="Booking workflow">
+      <button type="button" class="progress-step active" data-step="login"><i>1</i>Login</button>
+      <button type="button" class="progress-step" data-step="booking"><i>2</i>Booking &amp; 3D</button>
+      <button type="button" class="progress-step" data-step="payment"><i>3</i>Confirmation &amp; Payment</button>
+      <button type="button" class="progress-step" data-step="confirmation"><i>4</i>E-Receipt</button>
     </nav>
-    <span class="header-note">See the space before you book.</span>
+    <span class="header-note">Verified room dimensions &amp; views</span>
   </header>
 
   <main class="container">
+    <!-- STEP 1: LOGIN PAGE -->
     <section id="page-login" class="page login-page">
-      <div class="login-copy"><span class="eyebrow">A MORE CONFIDENT WAY TO BOOK</span><h1>Don't just see<br>the room. <em>Explore it.</em></h1><p>Browse stays, inspect the layout in 3D, and understand the view before reserving.</p></div>
+      <div class="login-copy">
+        <span class="eyebrow">ROOM-LEVEL TRANSPARENCY</span>
+        <h1>Don't just guess<br>the room. <em>Inspect it in 3D.</em></h1>
+        <p>Explore true-to-scale 3D layouts, check window views by floor elevation, configure your stay like leading booking platforms, and pay seamlessly via Thai QR or card.</p>
+        <div class="login-highlights">
+          <span>✓ True-scale 3D floor plans &amp; dimensions</span>
+          <span>✓ Floor-accurate Day / Sunset / Night views</span>
+          <span>✓ Transparent taxes, fees &amp; PromptPay QR</span>
+        </div>
+      </div>
       <div class="card login-card">
-        <span class="eyebrow">GUEST ACCESS</span><h2>Welcome to StayBook</h2><p class="muted">Passwordless-style demo sign-in. No account creation required.</p>
-        <label for="login-email">Email address</label><input id="login-email" type="email" value="guest@example.com" placeholder="you@example.com">
-        <button id="send-code" class="btn primary full" type="button">Continue with email <span>→</span></button>
-        <div id="otp-area" class="hidden otp-area"><label for="otp">Demo verification code</label><input id="otp" maxlength="6" inputmode="numeric" value="123456"><p class="hint">Enter <b>123456</b>. No email is sent.</p><button id="verify" class="btn primary full" type="button">Verify and enter</button></div>
-        <div class="rule"></div><p class="fine">Demo authentication only. No credentials are stored or transmitted.</p>
+        <span class="eyebrow">STEP 1 OF 3 · GUEST SIGN-IN</span>
+        <h2>Welcome to StayBook</h2>
+        <p class="muted">Enter your email for passwordless demo access, or use instant guest sign-in.</p>
+        <label for="login-email">Email address</label>
+        <input id="login-email" type="email" value="guest@example.com" placeholder="you@example.com">
+        <button id="send-code" class="btn primary full" type="button">Send verification code <span>→</span></button>
+        <div id="otp-area" class="hidden otp-area">
+          <label for="otp">6-digit verification code</label>
+          <input id="otp" maxlength="6" inputmode="numeric" value="123456">
+          <p class="hint">Demo code is <b>123456</b>. No actual email is sent.</p>
+          <button id="verify" class="btn primary full" type="button">Verify &amp; go to booking →</button>
+        </div>
+        <button id="quick-demo-login" class="btn secondary full" type="button">Instant Demo Sign-In (Skip OTP)</button>
+        <div class="rule"></div>
+        <p class="fine">Prototype environment · Supports browser &amp; in-app Back navigation.</p>
       </div>
     </section>
 
-    <section id="page-browse" class="page hidden">
-      <div class="heading-row"><div><span class="eyebrow">DISCOVER YOUR STAY</span><h1>Find your perfect room.</h1><p class="muted">Fictional Bangkok properties for this interactive prototype.</p></div><span class="location-chip">⌖ Bangkok, Thailand</span></div>
-      <div class="card search-panel">
-        <div class="field"><label for="search-in">Check-in</label><input id="search-in" type="date"></div>
-        <div class="field"><label for="search-out">Check-out</label><input id="search-out" type="date"></div>
-        <div class="field"><label for="search-guests">Guests</label><select id="search-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
-        <button id="search" class="btn primary" type="button">Search stays</button>
+    <!-- STEP 2: BOOKING PAGE (ROOM SELECTION + ACCURATE 3D VIEWER + OTA CONFIGURATION) -->
+    <section id="page-booking" class="page hidden">
+      <div class="nav-strip">
+        <button id="back-from-booking" class="back-pill" type="button">← Return to previous page</button>
+        <span class="step-badge">STEP 2 OF 3 · SELECT ROOM, INSPECT 3D &amp; CONFIGURE STAY</span>
       </div>
-      <div class="list-heading"><h2>Featured rooms</h2><span>3 sample properties</span></div>
-      <div id="rooms" class="room-grid"></div>
-    </section>
 
-    <section id="page-details" class="page hidden">
-      <button id="back-browse" class="back" type="button">← Back to stays</button>
-      <div class="heading-row detail-title"><div><span class="eyebrow">ROOM DETAILS</span><h1 id="room-name"></h1><p id="room-location" class="muted"></p></div><span class="rating">★ <span id="room-rating"></span> guest rating (demo)</span></div>
-      <div class="photo-strip"><img id="room-photo" alt="Room reference photo"><img id="room-photo-2" alt="Room detail reference photo"></div>
-      <div class="detail-columns">
+      <div class="heading-row detail-title">
+        <div>
+          <span class="eyebrow">INTERACTIVE ROOM &amp; STAY CONFIGURATOR</span>
+          <h1 id="room-name">The Urban Sanctuary</h1>
+          <p id="room-location" class="muted">Sukhumvit · Bangkok, Thailand</p>
+        </div>
+        <div class="title-badges">
+          <span id="room-view-badge" class="location-chip">Floor 14 · Skyline View</span>
+          <span class="rating">★ <span id="room-rating">4.9</span> (Demo)</span>
+        </div>
+      </div>
+
+      <!-- Property / Room Selector Bar -->
+      <div class="room-switcher-wrap">
+        <div class="switcher-head">
+          <b>Choose a room type to inspect in 3D:</b>
+          <span class="muted small">3 verified concept layouts in Bangkok</span>
+        </div>
+        <div id="rooms" class="room-grid compact-grid"></div>
+      </div>
+
+      <div class="detail-columns booking-layout">
         <div class="detail-main">
-          <article class="card info-card">
-            <div class="card-heading"><h2>Room overview</h2><span class="chip">Property information</span></div>
-            <p id="room-description" class="body-copy"></p>
-            <div class="specs"><div><b id="room-size"></b><small>Room size</small></div><div><b id="room-bed"></b><small>Bed type</small></div><div><b id="room-capacity"></b><small>Max guests</small></div><div><b>1 bathroom</b><small>Facilities</small></div></div>
-          </article>
-
+          <!-- Accurate Interactive 3D Viewer Card -->
           <article class="card tour-card">
-            <div class="card-heading"><div><h2>Explore this room in interactive 3D</h2><p class="muted small">Drag to orbit · scroll or pinch to zoom · select a pin to inspect features.</p></div><span id="room3d-floor-chip" class="chip green">3D room concept</span></div>
-            <div class="tour-tabs" role="tablist" aria-label="3D viewing mode">
-              <button class="tour-tab active" data-viewmode="room" type="button">Room 3D</button>
-              <button class="tour-tab" data-viewmode="dollhouse" type="button">3D floor plan</button>
-              <button class="tour-tab" data-viewmode="outside" id="tab-outside-view" type="button">Window view</button>
+            <div class="card-heading">
+              <div>
+                <h2>Interactive 3D Room &amp; Window View Explorer</h2>
+                <p class="muted small">Left-drag to orbit · Right-drag to pan · Scroll/pinch to zoom · Click pins 1–5 to inspect.</p>
+              </div>
+              <span id="room3d-floor-chip" class="chip green">Floor 14 · 6.33 × 6.00 m</span>
             </div>
+
+            <div class="tour-tabs" role="tablist" aria-label="3D viewing mode">
+              <button class="tour-tab active" data-viewmode="room" type="button">3D Cutaway</button>
+              <button class="tour-tab" data-viewmode="eye" type="button">Eye-Level 360°</button>
+              <button class="tour-tab" data-viewmode="dollhouse" type="button">Floor Plan</button>
+              <button class="tour-tab" data-viewmode="outside" id="tab-outside-view" type="button">Window View</button>
+            </div>
+
             <div class="panorama-wrap room3d-wrap">
               <div id="room3d" aria-label="Interactive 3D model of the hotel room"></div>
-              <div class="room3d-topline"><span id="room3d-status">Interactive room model · drag to rotate</span><button id="room3d-reset" class="icon-btn" type="button">Reset camera</button></div>
-              <div class="room3d-hotspots" aria-label="Choose a feature">
+              <div class="room3d-topline">
+                <span id="room3d-status">3D Cutaway · Drag to rotate, scroll to zoom</span>
+                <button id="room3d-reset" class="icon-btn" type="button">Reset camera</button>
+              </div>
+
+              <div class="room3d-hotspots" aria-label="Interactive room pins">
                 <button class="room-hotspot" data-spot="bed" type="button"><i>1</i><span id="spot-label-bed">King bed</span></button>
                 <button class="room-hotspot" data-spot="window" type="button"><i>2</i><span id="spot-label-window">Window view</span></button>
                 <button class="room-hotspot" data-spot="tv" type="button"><i>3</i><span>Smart TV</span></button>
                 <button class="room-hotspot" data-spot="desk" type="button"><i>4</i><span>Workspace</span></button>
+                <button class="room-hotspot" data-spot="bath" type="button"><i>5</i><span>En-suite bath</span></button>
               </div>
+
               <div id="room3d-dimensions" class="room3d-dimensions hidden" aria-hidden="true">
-                <span class="room3d-dim-tag" data-dim="room">6.3 × 6.0 m</span>
+                <span class="room3d-dim-tag" data-dim="width">Width 6.33 m</span>
+                <span class="room3d-dim-tag" data-dim="depth">Depth 6.00 m</span>
                 <span class="room3d-dim-tag" data-dim="bed">King 180 × 200 cm</span>
-                <span class="room3d-dim-tag" data-dim="window">Window 5.4 m</span>
-                <span class="room3d-dim-tag" data-dim="ceiling">Ceiling 3.1 m</span>
+                <span class="room3d-dim-tag" data-dim="window">Glass 4.80 × 2.40 m</span>
+                <span class="room3d-dim-tag" data-dim="bath">En-suite 2.30 × 2.50 m</span>
               </div>
+
               <div id="room3d-info" class="room3d-info-card hidden" role="region" aria-live="polite">
                 <div class="room3d-info-head">
-                  <strong id="room3d-info-title">Feature details</strong>
-                  <button id="room3d-info-close" type="button" aria-label="Close feature details">✕</button>
+                  <strong id="room3d-info-title">Feature specification</strong>
+                  <button id="room3d-info-close" type="button" aria-label="Close specification">✕</button>
                 </div>
                 <p id="room3d-info-body"></p>
               </div>
-              <div id="viewer-loading" class="viewer-loading">Building interactive 3D room…</div>
+
+              <div id="viewer-loading" class="viewer-loading">Initializing true-scale 3D room model…</div>
             </div>
-            <div class="viewpoint-row"><b>Camera presets</b><div><button class="icon-btn active" data-spot="overview" type="button">Overview</button><button class="icon-btn" data-spot="bed" type="button">Bed</button><button class="icon-btn" data-spot="window" type="button">Window</button><button class="icon-btn" data-spot="desk" type="button">Desk</button><button class="icon-btn" data-spot="tv" type="button">TV</button></div></div>
+
+            <div class="viewpoint-row">
+              <b>Camera angles</b>
+              <div>
+                <button class="icon-btn active" data-spot="overview" type="button">Overview</button>
+                <button class="icon-btn" data-spot="bed" type="button">Bed</button>
+                <button class="icon-btn" data-spot="window" type="button">Window</button>
+                <button class="icon-btn" data-spot="desk" type="button">Desk</button>
+                <button class="icon-btn" data-spot="tv" type="button">TV</button>
+                <button class="icon-btn" data-spot="bath" type="button">Bathroom</button>
+              </div>
+            </div>
+
             <div class="tour-actions">
-              <div><button id="light-day" class="icon-btn active" type="button">☀ Day</button><button id="light-sunset" class="icon-btn" type="button">🌇 Sunset</button><button id="light-night" class="icon-btn" type="button">☾ Night</button><button id="toggle-dimensions" class="icon-btn" type="button">📏 Dimensions</button></div>
+              <div>
+                <button id="light-day" class="icon-btn active" type="button">☀ Day</button>
+                <button id="light-sunset" class="icon-btn" type="button">🌇 Sunset</button>
+                <button id="light-night" class="icon-btn" type="button">☾ Night</button>
+                <button id="toggle-dimensions" class="icon-btn" type="button">📏 3D Dimensions</button>
+              </div>
               <button id="room3d-fullscreen" class="icon-btn" type="button">⛶ Fullscreen</button>
             </div>
-            <p class="disclaimer"><b>Prototype disclosure:</b> This is a procedurally built illustrative 3D room, not a laser scan or dimensionally verified model of a real hotel room. Furniture, room proportions, and the exterior backdrop are demonstration geometry. Replace with a property-measured 3D model and verified window view before presenting it as an actual room.</p>
+            <p class="disclaimer"><b>Accuracy &amp; prototype note:</b> Room zones (sleeping area, workspace, balcony, and glass-walled en-suite bathroom) are modeled to architectural metric ratios matching the listed floor area. Replace procedural meshes with property-scanned glTF/GLB assets and verified window photography for live commercial listings.</p>
           </article>
 
-          <article class="card amenities-card"><h2>Amenities</h2><div id="amenities" class="amenities"></div></article>
+          <!-- Room Specs & Reference Photos -->
+          <article class="card info-card">
+            <div class="card-heading">
+              <h2>Room Specifications &amp; Reference Photos</h2>
+              <span class="chip">Verified layout specs</span>
+            </div>
+            <p id="room-description" class="body-copy"></p>
+            <div class="specs">
+              <div><b id="room-size">38 m²</b><small>Total floor area</small></div>
+              <div><b id="room-bed">King bed</b><small>Mattress size</small></div>
+              <div><b id="room-capacity">2 adults, 1 child</b><small>Max occupancy</small></div>
+              <div><b id="room-bath-spec">Rain shower</b><small>En-suite bathroom</small></div>
+            </div>
+            <div class="photo-strip inside-card-photos">
+              <img id="room-photo" alt="Room interior reference">
+              <img id="room-photo-2" alt="Room lounge and detail reference">
+            </div>
+            <div id="amenities" class="amenities"></div>
+          </article>
         </div>
-        <aside class="card reserve-card">
-          <div class="price"><b id="room-price"></b><span>/ night</span></div><p class="hint">Price before taxes and fees</p>
-          <div class="field"><label for="detail-in">Check-in</label><input id="detail-in" type="date"></div>
-          <div class="field"><label for="detail-out">Check-out</label><input id="detail-out" type="date"></div>
-          <div class="field"><label for="detail-guests">Guests</label><select id="detail-guests"><option>1</option><option selected>2</option><option>3</option><option>4</option></select></div>
-          <div class="summary-line"><span>Number of nights</span><b id="estimate-nights">3 nights</b></div>
-          <div class="summary-line"><span>Estimated total*</span><b id="estimate-total"></b></div>
-          <button id="reserve" class="btn primary full" type="button">Continue to payment →</button><p class="hint center">No charge until confirmation (demo only).</p>
+
+        <!-- OTA-Style Basic Booking Configuration Sidebar -->
+        <aside class="card reserve-card config-card">
+          <div class="config-header">
+            <span class="eyebrow">BOOKING CONFIGURATION</span>
+            <div class="price"><b id="room-price">฿3,200</b><span>/ night</span></div>
+            <p class="hint">Base room rate before rate plan &amp; taxes</p>
+          </div>
+
+          <div class="form-grid compact-dates">
+            <div class="field">
+              <label for="detail-in">Check-in</label>
+              <input id="detail-in" type="date">
+            </div>
+            <div class="field">
+              <label for="detail-out">Check-out</label>
+              <input id="detail-out" type="date">
+            </div>
+          </div>
+
+          <div class="form-grid three-col">
+            <div class="field">
+              <label for="detail-adults">Adults</label>
+              <select id="detail-adults">
+                <option value="1">1 Adult</option>
+                <option value="2" selected>2 Adults</option>
+                <option value="3">3 Adults</option>
+                <option value="4">4 Adults</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="detail-children">Children</label>
+              <select id="detail-children">
+                <option value="0" selected>0</option>
+                <option value="1">1 Child</option>
+                <option value="2">2 Children</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="detail-rooms">Rooms</label>
+              <select id="detail-rooms">
+                <option value="1" selected>1 Room</option>
+                <option value="2">2 Rooms</option>
+                <option value="3">3 Rooms</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Rate Plan Selection (Agoda / Booking.com pattern) -->
+          <div class="field">
+            <label>Rate Plan &amp; Cancellation Policy</label>
+            <div class="rate-options" id="rate-options">
+              <label class="rate-option active">
+                <input type="radio" name="rate-plan" value="saver" data-addon="0" checked>
+                <div>
+                  <strong>Room Only · Non-Refundable</strong>
+                  <small>Best price · No free cancellation</small>
+                </div>
+                <span>Included</span>
+              </label>
+              <label class="rate-option">
+                <input type="radio" name="rate-plan" value="flex" data-addon="350">
+                <div>
+                  <strong>Flexible · Free Cancellation</strong>
+                  <small>Cancel free up to 24h before check-in</small>
+                </div>
+                <span>+฿350/nt</span>
+              </label>
+              <label class="rate-option">
+                <input type="radio" name="rate-plan" value="breakfast" data-addon="650">
+                <div>
+                  <strong>Breakfast + Free Cancellation</strong>
+                  <small>Daily buffet breakfast for registered guests</small>
+                </div>
+                <span>+฿650/nt</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Stay Preferences -->
+          <div class="form-grid">
+            <div class="field">
+              <label for="pref-bed">Bedding &amp; Pillows</label>
+              <select id="pref-bed">
+                <option value="Standard Setup">Standard Setup</option>
+                <option value="Extra Soft Pillows">Extra Soft Pillows</option>
+                <option value="Firm Orthopedic Setup">Firm Orthopedic Setup</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="pref-floor">Arrival &amp; Floor</label>
+              <select id="pref-floor">
+                <option value="Assigned Verified Floor">Verified Floor</option>
+                <option value="High Floor Priority">High Floor Priority</option>
+                <option value="Quiet End-of-Hall">Quiet End-of-Hall</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="rule"></div>
+
+          <!-- Live Price & Tax Preview -->
+          <div class="mini-breakdown">
+            <div class="summary-line"><span id="est-room-label">Room (1 × 3 nights)</span><b id="est-room-sub">฿9,600.00</b></div>
+            <div class="summary-line"><span id="est-plan-label">Rate plan add-on</span><b id="est-plan-sub">฿0.00</b></div>
+            <div class="summary-line"><span>Service fee (5%)</span><b id="est-service">฿480.00</b></div>
+            <div class="summary-line"><span>VAT (7%)</span><b id="est-tax">฿705.60</b></div>
+            <div class="summary-line total-preview"><span>Estimated total</span><b id="estimate-total">฿10,785.60</b></div>
+          </div>
+
+          <button id="reserve" class="btn primary full" type="button">Continue to Confirmation &amp; Payment →</button>
+          <p class="hint center">You can return to this page anytime before finalizing.</p>
         </aside>
       </div>
     </section>
 
+    <!-- STEP 3: BOOKING CONFIRMATION AND PAYMENT -->
     <section id="page-payment" class="page hidden">
-      <button id="back-details" class="back" type="button">← Back to room</button>
-      <div class="heading-row"><div><span class="eyebrow">FINAL REVIEW</span><h1>Review your reservation.</h1><p class="muted">Check the guest, dates, and full price breakdown.</p></div></div>
+      <div class="nav-strip">
+        <button id="back-from-payment" class="back-pill" type="button">← Return to previous page</button>
+        <span class="step-badge">STEP 3 OF 3 · BOOKING CONFIRMATION &amp; PAYMENT</span>
+      </div>
+
+      <div class="heading-row">
+        <div>
+          <span class="eyebrow">FINALIZE RESERVATION</span>
+          <h1>Booking Confirmation &amp; Payment</h1>
+          <p class="muted">Verify your stay configuration, guest details, tax breakdown, and choose your preferred payment method.</p>
+        </div>
+      </div>
+
       <div class="payment-columns">
         <div class="payment-main">
-          <article class="card payment-card"><h2>Your stay</h2><div class="stay"><img id="pay-photo" alt="Selected room"><div><b id="pay-room"></b><p id="pay-location" class="muted"></p><span class="chip">★ <span id="pay-rating"></span></span></div></div><div class="rule"></div><div class="facts"><div><small>CHECK-IN</small><b id="pay-in"></b></div><div><small>CHECK-OUT</small><b id="pay-out"></b></div><div><small>DURATION</small><b id="pay-nights"></b></div><div><small>GUESTS</small><b id="pay-guests"></b></div></div></article>
-          <article class="card payment-card"><h2>Guest information</h2><p class="muted small">Contact details for this reservation.</p><div class="form-grid"><div class="field"><label for="guest-name">Full name</label><input id="guest-name" placeholder="Your full name"></div><div class="field"><label for="guest-email">Email</label><input id="guest-email" type="email" placeholder="you@example.com"></div></div><div class="field"><label for="requests">Special requests (optional)</label><input id="requests" placeholder="Late check-in, extra pillows…"></div></article>
+          <!-- Booking Summary Confirmation Card -->
+          <article class="card payment-card">
+            <div class="card-heading">
+              <h2>1. Reservation Summary</h2>
+              <span id="pay-policy-badge" class="chip green">Non-Refundable</span>
+            </div>
+            <div class="stay">
+              <img id="pay-photo" alt="Selected room">
+              <div>
+                <b id="pay-room">The Urban Sanctuary</b>
+                <p id="pay-location" class="muted">Sukhumvit · Bangkok, Thailand</p>
+                <span class="chip" id="pay-view-tag">Floor 14 · Skyline View</span>
+              </div>
+            </div>
+            <div class="rule"></div>
+            <div class="facts four-facts">
+              <div><small>CHECK-IN</small><b id="pay-in"></b></div>
+              <div><small>CHECK-OUT</small><b id="pay-out"></b></div>
+              <div><small>STAY LENGTH</small><b id="pay-nights"></b></div>
+              <div><small>OCCUPANCY</small><b id="pay-guests"></b></div>
+              <div><small>RATE PLAN</small><b id="pay-plan"></b></div>
+              <div><small>PREFERENCES</small><b id="pay-prefs"></b></div>
+            </div>
+          </article>
+
+          <!-- Guest Information Card -->
+          <article class="card payment-card">
+            <h2>2. Primary Guest Details</h2>
+            <p class="muted small">Booking voucher and 3D room access link will be issued to this guest.</p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="guest-name">Full name (as on ID/Passport)</label>
+                <input id="guest-name" placeholder="e.g. Sakdichot Hanruangdej">
+              </div>
+              <div class="field">
+                <label for="guest-email">Email address</label>
+                <input id="guest-email" type="email" placeholder="you@example.com">
+              </div>
+            </div>
+            <div class="form-grid">
+              <div class="field">
+                <label for="guest-phone">Mobile phone number</label>
+                <input id="guest-phone" type="tel" placeholder="+66 80-000-0000">
+              </div>
+              <div class="field">
+                <label for="requests">Special requests (optional)</label>
+                <input id="requests" placeholder="Airport transfer, late check-in…">
+              </div>
+            </div>
+          </article>
+
+          <!-- Multiple Payment Choices Card -->
+          <article class="card payment-card">
+            <div class="card-heading">
+              <h2>3. Select Payment Method</h2>
+              <span class="chip">256-bit SSL Demo</span>
+            </div>
+            <p class="muted small">Choose Thai PromptPay QR, Credit/Debit Card, Mobile Banking, or Pay at Property.</p>
+
+            <div class="pay-methods" role="tablist" aria-label="Payment methods">
+              <button type="button" class="pay-method-btn active" data-paymethod="qr">
+                <strong>Thai QR (PromptPay)</strong>
+                <small>Instant bank scan · Zero fee</small>
+              </button>
+              <button type="button" class="pay-method-btn" data-paymethod="card">
+                <strong>Credit / Debit Card</strong>
+                <small>Visa · Mastercard · JCB</small>
+              </button>
+              <button type="button" class="pay-method-btn" data-paymethod="bank">
+                <strong>Mobile Banking App</strong>
+                <small>K PLUS · SCB · Krungthai</small>
+              </button>
+              <button type="button" class="pay-method-btn" data-paymethod="property">
+                <strong>Pay at Property</strong>
+                <small>Settle at hotel check-in</small>
+              </button>
+            </div>
+
+            <!-- Panel A: Thai QR Payment (PromptPay) -->
+            <div id="pay-panel-qr" class="pay-panel">
+              <div class="qr-box">
+                <div class="qr-visual">
+                  <div class="qr-header-bar">THAI QR PAYMENT · PROMPTPAY</div>
+                  <div id="qr-svg-wrap" class="qr-svg-wrap" aria-label="PromptPay QR Code"></div>
+                  <div class="qr-amount-tag">Amount: <b id="qr-amount-display">฿10,785.60</b></div>
+                </div>
+                <div class="qr-instructions">
+                  <span class="chip green">Ref: <b id="qr-ref-display">SB-QR2026</b></span>
+                  <h3>Scan QR with any Thai Banking App</h3>
+                  <ol>
+                    <li>Open K PLUS, SCB EASY, Krungthai NEXT, Bangkok Bank, or any PromptPay-enabled app.</li>
+                    <li>Scan the QR code on the left — the exact total including 5% service fee and 7% VAT is pre-filled.</li>
+                    <li>Confirm the transfer and tick the confirmation box below.</li>
+                  </ol>
+                  <label class="qr-confirm-check">
+                    <input type="checkbox" id="qr-paid-check" checked>
+                    <span>I have scanned and completed the PromptPay QR transfer (Demo toggle)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel B: Credit / Debit Card -->
+            <div id="pay-panel-card" class="pay-panel hidden">
+              <div class="field">
+                <label for="card-name">Cardholder name</label>
+                <input id="card-name" placeholder="NAME ON CARD">
+              </div>
+              <div class="field">
+                <label for="card-number">Card number</label>
+                <input id="card-number" maxlength="19" inputmode="numeric" placeholder="4532 •••• •••• 8890">
+              </div>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="card-exp">Expiry date (MM/YY)</label>
+                  <input id="card-exp" maxlength="5" placeholder="09/29">
+                </div>
+                <div class="field">
+                  <label for="card-cvv">Security code (CVV)</label>
+                  <input id="card-cvv" maxlength="4" inputmode="numeric" placeholder="123">
+                </div>
+              </div>
+            </div>
+
+            <!-- Panel C: Mobile Banking App -->
+            <div id="pay-panel-bank" class="pay-panel hidden">
+              <label>Choose your Thai Mobile Banking provider</label>
+              <div class="bank-grid">
+                <label class="bank-choice active"><input type="radio" name="bank-app" value="K PLUS (Kasikornbank)" checked><b>K PLUS</b><small>Kasikornbank</small></label>
+                <label class="bank-choice"><input type="radio" name="bank-app" value="SCB EASY (Siam Commercial Bank)"><b>SCB EASY</b><small>Siam Commercial</small></label>
+                <label class="bank-choice"><input type="radio" name="bank-app" value="Krungthai NEXT"><b>Krungthai NEXT</b><small>Krungthai Bank</small></label>
+                <label class="bank-choice"><input type="radio" name="bank-app" value="Bualuang mBanking"><b>Bualuang mBanking</b><small>Bangkok Bank</small></label>
+              </div>
+              <p class="hint" style="margin-top:10px;">A push notification payment request will be simulated upon clicking confirm.</p>
+            </div>
+
+            <!-- Panel D: Pay at Property -->
+            <div id="pay-panel-property" class="pay-panel hidden">
+              <div class="property-pay-note">
+                <b>No immediate online charge</b>
+                <p class="muted small">Your room and exact floor/view selection are held under your guest email and mobile number. Full payment (including 5% service fee and 7% VAT) is collected at the front desk upon check-in.</p>
+              </div>
+            </div>
+          </article>
         </div>
-        <aside class="card price-card"><h2>Price breakdown</h2><div class="summary-line"><span id="subtotal-label"></span><b id="subtotal"></b></div><div class="summary-line"><span>Service fee (5%)</span><b id="service"></b></div><div class="summary-line"><span>VAT (7%)</span><b id="tax"></b></div><div class="rule"></div><div class="grand-total"><span>Total amount</span><b id="total"></b></div><p class="disclaimer">Illustrative formula: 5% service fee on room subtotal, then 7% VAT on subtotal plus service fee. Actual tax treatment and hotel charges must be confirmed with a qualified local advisor and property operator.</p><button id="confirm" class="btn primary full" type="button">Confirm demo booking →</button><p class="hint center">No payment gateway connected. No money is collected.</p></aside>
+
+        <!-- Itemized Tax & Fee Calculation Sidebar -->
+        <aside class="card price-card">
+          <h2>Tax &amp; Fee Breakdown</h2>
+          <div class="summary-line"><span id="subtotal-label">฿3,200 × 1 room × 3 nights</span><b id="subtotal">฿9,600.00</b></div>
+          <div class="summary-line"><span id="plan-addon-label">Rate plan (Room Only)</span><b id="plan-addon">฿0.00</b></div>
+          <div class="summary-line"><span>Room &amp; plan subtotal</span><b id="net-subtotal">฿9,600.00</b></div>
+          <div class="summary-line"><span>Service fee (5%)</span><b id="service">฿480.00</b></div>
+          <div class="summary-line"><span>VAT (7% on subtotal + service)</span><b id="tax">฿705.60</b></div>
+          <div class="rule"></div>
+          <div class="grand-total"><span>Total amount (THB)</span><b id="total">฿10,785.60</b></div>
+          <p class="disclaimer">Tax &amp; fee formula: 5% hotel service charge applied to room + rate plan subtotal, followed by 7% Thailand VAT on the combined amount.</p>
+          <button id="confirm" class="btn primary full" type="button">Confirm &amp; Pay Now →</button>
+          <p class="hint center">Simulated prototype transaction · No real funds charged.</p>
+        </aside>
       </div>
     </section>
 
+    <!-- STEP 4: BOOKING CONFIRMED / E-RECEIPT -->
     <section id="page-confirmation" class="page hidden confirmation">
-      <div class="success-mark">✓</div><span class="eyebrow">BOOKING COMPLETE</span><h1>Your stay is confirmed!</h1><p class="muted">This is a local demo confirmation, not a real reservation.</p>
-      <article class="card confirm-card"><div class="card-heading"><h2>Booking confirmation</h2><span class="status">CONFIRMED</span></div><div class="rule"></div><small class="eyebrow">BOOKING REFERENCE</small><div id="reference" class="reference"></div><div class="rule"></div><div class="summary-line"><span>Property</span><b id="confirm-room"></b></div><div class="summary-line"><span>Guest</span><b id="confirm-guest"></b></div><div class="summary-line"><span>Stay</span><b id="confirm-dates"></b></div><div class="rule"></div><div class="grand-total"><span>Total (demo)</span><b id="confirm-total"></b></div></article>
-      <button id="restart" class="btn primary" type="button">Return to homepage</button>
+      <div class="nav-strip center-strip">
+        <button id="back-from-confirmation" class="back-pill" type="button">← Return to previous page</button>
+      </div>
+      <div class="success-mark">✓</div>
+      <span class="eyebrow">RESERVATION CONFIRMED</span>
+      <h1>Your stay is confirmed!</h1>
+      <p class="muted">Your 3D-inspected room has been locked in this demo session.</p>
+
+      <article class="card confirm-card">
+        <div class="card-heading">
+          <h2>Official Demo E-Receipt</h2>
+          <span id="confirm-pay-status" class="status">PAID · PROMPTPAY QR</span>
+        </div>
+        <div class="rule"></div>
+        <small class="eyebrow">BOOKING REFERENCE</small>
+        <div id="reference" class="reference">SB-123456</div>
+        <div class="rule"></div>
+        <div class="summary-line"><span>Property &amp; Room</span><b id="confirm-room"></b></div>
+        <div class="summary-line"><span>Floor &amp; View</span><b id="confirm-view"></b></div>
+        <div class="summary-line"><span>Primary Guest</span><b id="confirm-guest"></b></div>
+        <div class="summary-line"><span>Check-in / Check-out</span><b id="confirm-dates"></b></div>
+        <div class="summary-line"><span>Configuration</span><b id="confirm-config"></b></div>
+        <div class="summary-line"><span>Payment Method</span><b id="confirm-method"></b></div>
+        <div class="rule"></div>
+        <div class="summary-line"><span>Subtotal + 5% Service + 7% VAT</span><b id="confirm-tax-note">Included</b></div>
+        <div class="grand-total"><span>Total Settled (THB)</span><b id="confirm-total"></b></div>
+      </article>
+
+      <div class="confirm-actions">
+        <button id="edit-booking-again" class="btn secondary" type="button">← Return to Confirmation &amp; Payment</button>
+        <button id="restart" class="btn primary" type="button">Book Another Room</button>
+      </div>
     </section>
   </main>
-  <footer class="footer"><span>© 2026 StayBook · Product prototype</span><span>Fictional listings · Simulated checkout</span></footer>
+
+  <footer class="footer">
+    <span>© 2026 StayBook 3D · Interactive Hospitality Prototype</span>
+    <span>Login → Booking &amp; 3D → Confirmation &amp; Payment</span>
+  </footer>
   <div id="toast" role="status" aria-live="polite"></div>
 </div>
 <script src="app.js"></script>
@@ -148,9 +534,9 @@
       var loading = document.getElementById("viewer-loading");
       if (loading && !loading.classList.contains("hidden") && !window.__staybook3DReady) {
         if (window.location.protocol === "file:") {
-          loading.textContent = "Opened via file:// — run a local server (python -m http.server 8000) or host online so the 3D ES module can load.";
+          loading.textContent = "Opened via file:// — run a local HTTP server (python -m http.server 8000) or host online so the 3D ES module can load.";
         } else {
-          loading.textContent = "Unable to load Three.js from CDN. Check your internet connection or WebGL support.";
+          loading.textContent = "Unable to load Three.js from CDN. Check internet connection or WebGL support.";
         }
       }
     }, 3500);
