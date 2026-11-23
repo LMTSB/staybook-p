@@ -226,16 +226,60 @@ body{margin:0;background:var(--bg);color:var(--ink);font:14px 'DM Sans',sans-ser
   .room-grid{grid-template-columns:1fr}
 }
 @media(max-width:640px){
-  .topbar{height:auto;min-height:68px;padding:10px 4vw;flex-wrap:wrap}
-  .progress{order:3;width:100%;justify-content:space-between}
+  /* Compact header: one row of step numbers, only the active label shown */
+  .topbar{height:auto;min-height:60px;padding:10px 4vw;flex-wrap:wrap;gap:10px}
+  .progress{order:3;width:100%;justify-content:space-between;flex-wrap:nowrap;gap:4px}
+  .progress-step{font-size:0;gap:0;padding:4px}
+  .progress-step.active{font-size:11px;gap:6px}
+  .progress-step i{width:26px;height:26px;font-size:11px}
+
+  /* Headings */
+  .login-copy h1{font-size:30px}
+  .heading-row h1,.detail-title h1{font-size:26px}
+  .confirmation h1{font-size:28px}
   .login-page{grid-template-columns:1fr;gap:20px;margin:5px auto}
-  .specs{grid-template-columns:1fr 1fr}
-  .photo-strip{grid-template-columns:1fr 1fr}
-  .photo-strip img{height:135px}
-  .panorama-wrap{height:380px}
+  .login-card{padding:20px}
+
+  /* Stack title + badges and switcher header */
+  .heading-row{flex-direction:column;align-items:flex-start;gap:10px}
+  .switcher-head{flex-direction:column;align-items:flex-start;gap:3px}
+  .step-badge{font-size:9px}
+
+  /* Tabs: full width, scroll instead of overflowing */
+  .tour-tabs{width:100%;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tour-tab{flex:1 0 auto;padding:9px 12px}
+
+  /* 3D viewer overlays */
+  .panorama-wrap{height:min(380px,70vh)}
+  .room3d-topline span{max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .room3d-info-card{left:8px;right:8px;bottom:8px;width:auto;max-height:45%;overflow:auto;padding:10px 12px}
   .room-hotspot span{display:none}
-  .facts{grid-template-columns:1fr 1fr}
-  .pay-methods,.bank-grid,.form-grid,.three-col{grid-template-columns:1fr}
+
+  /* No iOS input zoom; bigger tap targets & text */
+  .login-card input,.field input,.field select{height:44px;font-size:16px}
+  .btn{height:46px;font-size:13px}
+  .icon-btn{padding:9px 12px;font-size:11px}
+  .room-bottom button{padding:9px 12px;font-size:10.5px}
+  .hint,.fine,.disclaimer{font-size:10.5px}
+  .body-copy{font-size:12.5px}
+
+  /* Keep guests/rooms in one row, other form grids stacked */
+  .pay-methods,.bank-grid,.form-grid{grid-template-columns:1fr}
+  .three-col{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+  /* Summary lines wrap cleanly */
+  .summary-line{align-items:flex-start}
+  .summary-line b{text-align:right;min-width:0;overflow-wrap:anywhere}
+
+  /* QR centered, not stretched */
   .qr-box{grid-template-columns:1fr}
-  .amenities{grid-template-columns:1fr 1fr}
+  .qr-visual{max-width:240px;margin:0 auto;width:100%}
+
+  /* Misc grids */
+  .specs,.facts,.amenities,.photo-strip{grid-template-columns:1fr 1fr}
+  .photo-strip img{height:135px}
+  .stay img{width:96px;height:72px}
+
+  /* Footer stacks */
+  .footer{flex-direction:column;gap:6px;text-align:center}
 }
